@@ -5,7 +5,7 @@ import Error from "./ui/Error";
 import Home from "./ui/Home";
 import Menu, { loader as menuLoader } from "./features/menu/Menu";
 import Cart from "./features/cart/Cart";
-import CreateOrder from "./features/order/CreateOrder";
+import CreateOrder, { action as createOrderAction } from "./features/order/CreateOrder";
 import Order, { loader as orderLoader } from "./features/order/Order";
 
 const router = createBrowserRouter([
@@ -33,6 +33,11 @@ const router = createBrowserRouter([
       {
         path: "/order/new",
         element: <CreateOrder />,
+        // WRITE DATA WITH REACT ROUTER "ACTIONS"
+        // 3) We need to connect the Form and the action
+        // So now, whenever there will be a new form submission on this route (the path /order/new),
+        // then this action here will be called.
+        action: createOrderAction,
       },
       {
         path: "/order/:orderId",

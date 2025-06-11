@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { Form, redirect } from "react-router-dom";
+
+import { createOrder } from "../../services/apiRestaurant";
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -36,23 +39,32 @@ function CreateOrder() {
     <div>
       <h2>Ready to order? Let's go!</h2>
 
-      <form>
+      {/*
+        WRITE DATA WITH REACT ROUTER "ACTIONS"
+        1) Use the Form component.
+        According to the teacher: Here we can also use PATCH and DELETE, but not GET. So, the GET method wouldn't work
+        in the way that we'll see throughout this lecture, but POST, PATCH, and DELETE are going to work.
+        Then, we could also specified the "action" where we can then write the path that this form shoudl be submitted to.
+        But, this is not going to be necessary because by default React Router will simply match the closest route.
+        So, there is no need to write action="/order/new".
+      */}
+      <Form method="POST">
         <div>
-          <label>First Name</label>
-          <input type="text" name="customer" required />
+          <label htmlFor="customer">First Name</label>
+          <input type="text" id="customer" name="customer" required />
         </div>
 
         <div>
-          <label>Phone number</label>
+          <label htmlFor="phone">Phone number</label>
           <div>
-            <input type="tel" name="phone" required />
+            <input type="tel" id="phone" name="phone" required />
           </div>
         </div>
 
         <div>
-          <label>Address</label>
+          <label htmlFor="address">Address</label>
           <div>
-            <input type="text" name="address" required />
+            <input type="text" id="address" name="address" required />
           </div>
         </div>
 
@@ -68,11 +80,32 @@ function CreateOrder() {
         </div>
 
         <div>
+          <input type="hidden" name="cart" value={JSON.stringify(cart)} />
           <button>Order now</button>
         </div>
-      </form>
+      </Form>
     </div>
   );
+}
+
+// WRITE DATA WITH REACT ROUTER "ACTIONS"
+// 2) We create the action
+// As soon as we submit the special "Form", then it will create a request that it will basically be intercepted by
+// this "action" function as soon as we have it connected with React Router, that is, we the route defined in App component.
+export async function action({ request }) {
+  // formData is just actually a regular Web API, that is, it is provided by the browser
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+
+  const order = {
+    ...data,
+    cart: JSON.parse(data.cart),
+    priority: data.priority === "on",
+  };
+
+  const newOrder = await createOrder(order);
+
+  return redirect(`/order/${newOrder.id}`);
 }
 
 export default CreateOrder;

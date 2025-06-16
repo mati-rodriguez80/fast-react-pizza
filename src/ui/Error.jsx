@@ -1,7 +1,8 @@
-import { useNavigate, useRouteError } from "react-router-dom";
+import { useRouteError } from "react-router-dom";
+
+import LinkButton from "./LinkButton";
 
 function Error() {
-  const navigate = useNavigate();
   // We can actually get the error message that happens inside React Router by using another custom hook.
   // So, since we are using this Error component as the "errorElement" in App component, this component
   // gets access to the error that has occurred.
@@ -11,7 +12,7 @@ function Error() {
     <div>
       <h1>Something went wrong 😢</h1>
       <p>{error.data || error.message}</p>
-      <button onClick={() => navigate(-1)}>&larr; Go back</button>
+      <LinkButton to="-1">&larr; Go back</LinkButton>
     </div>
   );
 }

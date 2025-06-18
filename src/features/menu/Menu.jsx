@@ -16,14 +16,11 @@ function Menu() {
   const menu = useLoaderData();
 
   return (
-    <>
-      <h1>Menu</h1>
-      <ul>
-        {menu.map((pizza) => (
-          <MenuItem pizza={pizza} key={pizza.id} />
-        ))}
-      </ul>
-    </>
+    <ul className="divide-y divide-stone-200 px-2">
+      {menu.map((pizza) => (
+        <MenuItem pizza={pizza} key={pizza.id} />
+      ))}
+    </ul>
   );
 }
 

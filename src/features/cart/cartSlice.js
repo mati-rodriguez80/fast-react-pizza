@@ -48,6 +48,8 @@ export default cartSlice.reducer;
 // with the "get" keyword, and that we have them all in the central place in this cartSlice.js file. Because
 // we'll actually need this operation later on in another component, and so then all we'll need to do is to
 // take this function here and just re-use it.
+export const getCart = (state) => state.cart.cart;
+
 export const getTotalCartQuantity = (state) =>
   state.cart.cart.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -55,3 +57,6 @@ export const getTotalCartQuantity = (state) =>
 // In that case, we can look into the "reselect" library which we'll allow us to optimize these selectors.
 export const getTotalCartPrice = (state) =>
   state.cart.cart.reduce((sum, item) => sum + item.totalPrice, 0);
+
+export const getCurrentQuantityById = (id) => (state) =>
+  state.cart.cart.find((item) => item.pizzaId === id)?.quantity ?? 0;

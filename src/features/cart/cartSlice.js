@@ -1,16 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  // cart: [],
-  cart: [
-    {
-      pizzaId: 12,
-      name: "Mediterranean",
-      quantity: 2,
-      unitPrice: 16,
-      totalPrice: 32,
-    },
-  ],
+  cart: [],
 };
 
 const cartSlice = createSlice({
@@ -52,3 +43,15 @@ export const {
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
+
+// This is a Redux Selector Function, and the recommendation and the standard is that these functions start
+// with the "get" keyword, and that we have them all in the central place in this cartSlice.js file. Because
+// we'll actually need this operation later on in another component, and so then all we'll need to do is to
+// take this function here and just re-use it.
+export const getTotalCartQuantity = (state) =>
+  state.cart.cart.reduce((sum, item) => sum + item.quantity, 0);
+
+// By the way, having these selector functions like this might actually cause performance issues in larger apps.
+// In that case, we can look into the "reselect" library which we'll allow us to optimize these selectors.
+export const getTotalCartPrice = (state) =>
+  state.cart.cart.reduce((sum, item) => sum + item.totalPrice, 0);
